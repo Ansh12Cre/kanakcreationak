@@ -1,0 +1,566 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Dashboard - Kanak Creation Jewellers</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="kanakcreation.css" />
+  <style>
+    .admin-dashboard {
+      padding: clamp(80px, 10vw, 120px) clamp(20px, 6vw, 80px);
+      min-height: 70vh;
+    }
+
+    .dashboard-header {
+      margin-bottom: 40px;
+    }
+  </style>
+</head>
+
+<body>
+  <header class="site-header">
+    <button class="menu-toggle" id="mobileMenuToggle" aria-label="Toggle menu">&#9776;</button>
+    <a class="brand" href="index.html" aria-label="Kanak Creation Jewellers home">
+      <span class="brand-mark">A</span>
+      <span>Kanak Creation Jewellers</span>
+    </a>
+    <nav class="nav" id="mainNav" aria-label="Primary navigation">
+      <div class="dropdown">
+        <a href="collections.html" class="dropdown-toggle" id="collectionsDropdown">Collections</a>
+        <div class="dropdown-menu">
+          <a href="collections.html">All Collections</a>
+          <a href="collections.html#newArrivals">New Arrivals</a>
+          <a href="collections.html#collections">Curated</a>
+          <a href="collections.html#Ansh">Segment Of Ring</a>
+        </div>
+      </div>
+      <a href="atelier.html">Atelier</a>
+      <a href="#visit">Visit</a>
+      <a href="admin.html" id="navAdminLink" style="display: inline; color: var(--accent-gold);">Dashboard</a>
+    </nav>
+    <a class="header-action" href="appointment.html">Book Viewing</a>
+    <button class="logout-action" id="logoutButton" type="button" style="display: inline-flex;">Logout</button>
+  </header>
+
+  <main>
+    <section class="admin-dashboard">
+      <div class="dashboard-header">
+        <p class="eyebrow">Admin Dashboard</p>
+        <h2>Manage Appointment Requests</h2>
+      </div>
+
+      <div class="dashboard-stats">
+        <div class="stat-card">
+          <p class="stat-title">Annual Sales Target</p>
+          <div class="stat-value">₹2.00 Cr</div>
+          <div class="progress-track">
+            <div class="progress-fill" id="goalProgressFill" style="width: 45%;"></div>
+          </div>
+          <p class="stat-subtitle" id="goalSubtitle">₹90L achieved &mdash; 45% of goal</p>
+
+          <form class="goal-form" id="goalForm"
+            style="margin-top: 24px; display: flex; gap: 12px; align-items: center;">
+            <input type="number" id="goalInput" placeholder="Add amount in ₹ (e.g. 50000)" required
+              style="min-height: 40px; font-size: 0.9rem;" />
+            <button class="small-button" type="submit">Add</button>
+            <button class="small-button" type="button" id="resetGoalBtn"
+              style="border-color: var(--error); color: var(--error);">Reset</button>
+          </form>
+        </div>
+      </div>
+
+      <div class="saved-requests">
+        <div class="saved-requests-header">
+          <h3>Saved Requests</h3>
+          <button class="small-button" id="refreshRequests" type="button">Refresh Data</button>
+        </div>
+        <ul class="request-list" id="requestList"></ul>
+      </div>
+
+      <div class="saved-requests" style="margin-top: 40px;">
+        <div class="saved-requests-header">
+          <h3>Manage Categories</h3>
+          <button class="small-button" id="refreshCategories" type="button">Refresh Categories</button>
+        </div>
+        <form class="goal-form" id="addCategoryForm"
+          style="margin-top: 24px; display: flex; gap: 12px; align-items: center;">
+          <input type="text" id="categoryNameInput" placeholder="New Category Name (e.g. Bridal Specials)" required
+            style="min-height: 40px; font-size: 0.9rem; flex: 1;" />
+          <button class="small-button" style="background-color: var(--accent-gold); color: white; border: none;"
+            type="submit">Add Category</button>
+        </form>
+        <p class="form-status" id="categoryFormStatus" role="status" aria-live="polite" style="margin-top: 10px;"></p>
+        <ul class="request-list" id="categoryList" style="margin-top: 20px;"></ul>
+      </div>
+
+      <div class="saved-requests" style="margin-top: 40px;">
+        <div class="saved-requests-header">
+          <h3>Add New Product (Collection)</h3>
+        </div>
+        <form class="booking-form" id="addProductForm" style="padding: 20px 0 0 0;">
+          <label>
+            Product Name
+            <input name="productName" type="text" placeholder="e.g. Gold Necklace" required />
+          </label>
+          <label>
+            Category
+            <select name="category" id="productCategorySelect" required>
+              <option value="newArrivals">New Arrivals</option>
+              <option value="collections">Curated Collections</option>
+              <option value="Ansh">Segment Of Ring</option>
+            </select>
+          </label>
+          <label>
+            Image URL
+            <input name="imageUrl" type="url" placeholder="https://..." required />
+          </label>
+          <label>
+            Weight (in grams)
+            <input name="weight" type="number" step="0.01" placeholder="e.g. 15.5" required />
+          </label>
+          <button class="button primary" type="submit">Save Product</button>
+          <p class="form-status" id="productFormStatus" role="status" aria-live="polite"></p>
+        </form>
+      </div>
+
+      <div class="saved-requests" style="margin-top: 40px;">
+        <div class="saved-requests-header">
+          <h3>Manage Added Products</h3>
+          <button class="small-button" id="refreshProducts" type="button">Refresh Products</button>
+        </div>
+        <ul class="request-list" id="productList"></ul>
+      </div>
+    </section>
+  </main>
+
+  <footer id="visit" class="site-footer">
+    <div>
+      <strong>Kanak Creation Jewellers</strong>
+      <p>MG Road, Bengaluru | Mon-Sat, 10:30 AM-8:00 PM</p>
+    </div>
+    <a href="tel:+919876543210">+91 98765 43210</a>
+  </footer>
+
+  <script>
+    // Mobile Menu & Dropdown logic
+    const mobileMenuToggle = document.getElementById("mobileMenuToggle");
+    const mainNav = document.getElementById("mainNav");
+    if (mobileMenuToggle && mainNav) {
+      mobileMenuToggle.addEventListener("click", () => {
+        mainNav.classList.toggle("is-open");
+      });
+    }
+
+    const collectionsDropdown = document.getElementById("collectionsDropdown");
+    if (collectionsDropdown) {
+      collectionsDropdown.addEventListener("click", (e) => {
+        if (window.innerWidth <= 960) {
+          e.preventDefault();
+          collectionsDropdown.parentElement.classList.toggle("is-active");
+        }
+      });
+    }
+
+    const currentRole = localStorage.getItem("auroraRole");
+    if (currentRole !== "admin") {
+      window.location.href = "index.html";
+    }
+
+    document.getElementById("logoutButton").addEventListener("click", () => {
+      localStorage.removeItem("auroraRole");
+      window.location.href = "index.html";
+    });
+
+    const requestList = document.getElementById("requestList");
+    const refreshRequests = document.getElementById("refreshRequests");
+    const addProductForm = document.getElementById("addProductForm");
+    const productFormStatus = document.getElementById("productFormStatus");
+
+    const databaseName = "auroraJewellers";
+    const storeName = "appointments";
+    const productsStoreName = "products";
+    const categoriesStoreName = "categories";
+
+    function openDatabase() {
+      return new Promise((resolve, reject) => {
+        const request = indexedDB.open(databaseName, 4);
+
+        request.onupgradeneeded = () => {
+          const database = request.result;
+          if (!database.objectStoreNames.contains(storeName)) {
+            database.createObjectStore(storeName, { keyPath: "id", autoIncrement: true });
+          }
+          if (!database.objectStoreNames.contains(productsStoreName)) {
+            database.createObjectStore(productsStoreName, { keyPath: "id", autoIncrement: true });
+          }
+          if (!database.objectStoreNames.contains(categoriesStoreName)) {
+            database.createObjectStore(categoriesStoreName, { keyPath: "id" });
+          }
+        };
+
+        request.onsuccess = () => resolve(request.result);
+        request.onerror = () => reject(request.error);
+      });
+    }
+
+    async function getAppointments() {
+      const database = await openDatabase();
+
+      return new Promise((resolve, reject) => {
+        const transaction = database.transaction(storeName, "readonly");
+        const store = transaction.objectStore(storeName);
+        const request = store.getAll();
+
+        request.onsuccess = () => {
+          database.close();
+          resolve(request.result.reverse());
+        };
+        request.onerror = () => {
+          database.close();
+          reject(request.error);
+        };
+      });
+    }
+
+    function formatAppointmentDate(value) {
+      return new Intl.DateTimeFormat("en-IN", {
+        dateStyle: "medium",
+        timeStyle: "short",
+      }).format(new Date(value));
+    }
+
+    async function renderAppointments() {
+      try {
+        const appointments = await getAppointments();
+        requestList.innerHTML = "";
+
+        if (appointments.length === 0) {
+          requestList.innerHTML = '<li class="empty-requests">No saved appointment requests yet.</li>';
+          return;
+        }
+
+        appointments.forEach((appointment) => {
+          const item = document.createElement("li");
+          item.className = "request-item";
+          item.innerHTML = `
+              <strong>${appointment.name}</strong>
+              <span class="request-meta">${appointment.occasion}</span>
+              <span class="request-meta">${appointment.phone}</span>
+              <span class="request-meta">${formatAppointmentDate(appointment.createdAt)}</span>
+            `;
+          requestList.appendChild(item);
+        });
+      } catch (error) {
+        requestList.innerHTML = '<li class="empty-requests">Unable to load saved requests.</li>';
+      }
+    }
+
+    refreshRequests.addEventListener("click", renderAppointments);
+
+    // Product Logic
+    const productList = document.getElementById("productList");
+    const refreshProducts = document.getElementById("refreshProducts");
+
+    async function getProducts() {
+      const database = await openDatabase();
+      return new Promise((resolve, reject) => {
+        const transaction = database.transaction(productsStoreName, "readonly");
+        const store = transaction.objectStore(productsStoreName);
+        const request = store.getAll();
+        request.onsuccess = () => {
+          database.close();
+          resolve(request.result.reverse());
+        };
+        request.onerror = () => {
+          database.close();
+          reject(request.error);
+        };
+      });
+    }
+
+    async function deleteProduct(id) {
+      if (!confirm("Are you sure you want to remove this product?")) return;
+      const database = await openDatabase();
+      return new Promise((resolve, reject) => {
+        const transaction = database.transaction(productsStoreName, "readwrite");
+        const store = transaction.objectStore(productsStoreName);
+        const request = store.delete(id);
+        request.onsuccess = () => {
+          database.close();
+          resolve();
+          renderProducts(); // Refresh list after deletion
+        };
+        request.onerror = () => {
+          database.close();
+          reject(request.error);
+        };
+      });
+    }
+
+    async function renderProducts() {
+      if (!productList) return;
+      try {
+        const products = await getProducts();
+        productList.innerHTML = "";
+
+        if (products.length === 0) {
+          productList.innerHTML = '<li class="empty-requests">No products added yet.</li>';
+          return;
+        }
+
+        products.forEach((product) => {
+          const item = document.createElement("li");
+          item.className = "request-item";
+          item.style.display = "flex";
+          item.style.justifyContent = "space-between";
+          item.style.alignItems = "center";
+
+          const infoDiv = document.createElement("div");
+
+          let categoryName = product.category;
+          if (productCategorySelect) {
+            const option = productCategorySelect.querySelector(`option[value="${product.category}"]`);
+            if (option) categoryName = option.textContent;
+          }
+
+          infoDiv.innerHTML = `
+            <strong>${product.name}</strong>
+            <span class="request-meta">Category: ${categoryName}</span>
+            <span class="request-meta">Weight: ${product.weight}g</span>
+            <span class="request-meta">Added: ${formatAppointmentDate(product.createdAt)}</span>
+          `;
+
+          const deleteBtn = document.createElement("button");
+          deleteBtn.className = "small-button";
+          deleteBtn.style.borderColor = "var(--error)";
+          deleteBtn.style.color = "var(--error)";
+          deleteBtn.textContent = "Remove";
+          deleteBtn.addEventListener("click", () => deleteProduct(product.id));
+
+          item.appendChild(infoDiv);
+          item.appendChild(deleteBtn);
+
+          productList.appendChild(item);
+        });
+      } catch (error) {
+        productList.innerHTML = '<li class="empty-requests">Unable to load products.</li>';
+      }
+    }
+
+    if (refreshProducts) refreshProducts.addEventListener("click", renderProducts);
+
+    async function saveProduct(product) {
+      const database = await openDatabase();
+      return new Promise((resolve, reject) => {
+        const transaction = database.transaction(productsStoreName, "readwrite");
+        const store = transaction.objectStore(productsStoreName);
+        store.add(product);
+        transaction.oncomplete = () => { database.close(); resolve(); };
+        transaction.onerror = () => { database.close(); reject(transaction.error); };
+      });
+    }
+
+    addProductForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      productFormStatus.classList.remove("is-error");
+      productFormStatus.textContent = "Saving product...";
+
+      const formData = new FormData(addProductForm);
+      const product = {
+        name: formData.get("productName").trim(),
+        category: formData.get("category"),
+        imageUrl: formData.get("imageUrl").trim(),
+        weight: parseFloat(formData.get("weight")),
+        createdAt: new Date().toISOString()
+      };
+
+      try {
+        await saveProduct(product);
+        addProductForm.reset();
+        productFormStatus.textContent = "Product successfully saved!";
+        renderProducts();
+      } catch (error) {
+        productFormStatus.classList.add("is-error");
+        productFormStatus.textContent = "Failed to save product.";
+      }
+    });
+
+    // Goal Logic
+    const goalForm = document.getElementById("goalForm");
+    const goalInput = document.getElementById("goalInput");
+    const goalProgressFill = document.getElementById("goalProgressFill");
+    const goalSubtitle = document.getElementById("goalSubtitle");
+    const GOAL_TARGET = 20000000; // 2 Cr
+
+    function formatIndianCurrency(num) {
+      if (num >= 10000000) return "₹" + (num / 10000000).toFixed(2) + " Cr";
+      if (num >= 100000) return "₹" + (num / 100000).toFixed(2) + "L";
+      return "₹" + num.toLocaleString("en-IN");
+    }
+
+    function renderGoal() {
+      let achieved = parseInt(localStorage.getItem("auroraGoalAchieved")) || 0;
+      let percentage = Math.min((achieved / GOAL_TARGET) * 100, 100).toFixed(1);
+
+      goalProgressFill.style.width = percentage + "%";
+      goalSubtitle.innerHTML = `${formatIndianCurrency(achieved)} achieved &mdash; ${percentage}% of goal`;
+    }
+
+    goalForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const addAmount = parseInt(goalInput.value);
+      if (!isNaN(addAmount)) {
+        let current = parseInt(localStorage.getItem("auroraGoalAchieved")) || 0;
+        localStorage.setItem("auroraGoalAchieved", current + addAmount);
+        goalInput.value = "";
+        renderGoal();
+      }
+    });
+
+    document.getElementById("resetGoalBtn").addEventListener("click", () => {
+      if (confirm("Reset the sales goal progress to zero?")) {
+        localStorage.setItem("auroraGoalAchieved", 0);
+        renderGoal();
+      }
+    });
+
+    // Category Logic
+    const categoryList = document.getElementById("categoryList");
+    const refreshCategories = document.getElementById("refreshCategories");
+    const addCategoryForm = document.getElementById("addCategoryForm");
+    const categoryNameInput = document.getElementById("categoryNameInput");
+    const categoryFormStatus = document.getElementById("categoryFormStatus");
+    const productCategorySelect = document.getElementById("productCategorySelect");
+
+    function generateCategoryId(name) {
+      return name.trim().toLowerCase().replace(/[^a-z0-9]+/g, '-');
+    }
+
+    async function getCategories() {
+      const database = await openDatabase();
+      return new Promise((resolve, reject) => {
+        const transaction = database.transaction(categoriesStoreName, "readonly");
+        const store = transaction.objectStore(categoriesStoreName);
+        const request = store.getAll();
+        request.onsuccess = () => { database.close(); resolve(request.result); };
+        request.onerror = () => { database.close(); reject(request.error); };
+      });
+    }
+
+    async function deleteCategory(id) {
+      if (!confirm("Are you sure you want to remove this category? Products in this category will no longer appear on the collections page.")) return;
+      const database = await openDatabase();
+      return new Promise((resolve, reject) => {
+        const transaction = database.transaction(categoriesStoreName, "readwrite");
+        const store = transaction.objectStore(categoriesStoreName);
+        const request = store.delete(id);
+        request.onsuccess = () => {
+          database.close();
+          resolve();
+          renderCategories();
+        };
+        request.onerror = () => {
+          database.close();
+          reject(request.error);
+        };
+      });
+    }
+
+    async function saveCategory(category) {
+      const database = await openDatabase();
+      return new Promise((resolve, reject) => {
+        const transaction = database.transaction(categoriesStoreName, "readwrite");
+        const store = transaction.objectStore(categoriesStoreName);
+        store.put(category);
+        transaction.oncomplete = () => { database.close(); resolve(); };
+        transaction.onerror = () => { database.close(); reject(transaction.error); };
+      });
+    }
+
+    async function renderCategories() {
+      if (!categoryList) return;
+      try {
+        const categories = await getCategories();
+
+        const defaultOptions = `
+          <option value="newArrivals">New Arrivals</option>
+          <option value="collections">Curated Collections</option>
+          <option value="Ansh">Segment Of Ring</option>
+        `;
+        productCategorySelect.innerHTML = defaultOptions;
+        categoryList.innerHTML = "";
+
+        if (categories.length === 0) {
+          categoryList.innerHTML = '<li class="empty-requests">No custom categories added yet.</li>';
+          return;
+        }
+
+        categories.forEach((cat) => {
+          const option = document.createElement("option");
+          option.value = cat.id;
+          option.textContent = cat.name;
+          productCategorySelect.appendChild(option);
+
+          const item = document.createElement("li");
+          item.className = "request-item";
+          item.style.display = "flex";
+          item.style.justifyContent = "space-between";
+          item.style.alignItems = "center";
+
+          const infoDiv = document.createElement("div");
+          infoDiv.innerHTML = `<strong>${cat.name}</strong>`;
+
+          const deleteBtn = document.createElement("button");
+          deleteBtn.className = "small-button";
+          deleteBtn.style.borderColor = "var(--error)";
+          deleteBtn.style.color = "var(--error)";
+          deleteBtn.textContent = "Remove";
+          deleteBtn.addEventListener("click", () => deleteCategory(cat.id));
+
+          item.appendChild(infoDiv);
+          item.appendChild(deleteBtn);
+          categoryList.appendChild(item);
+        });
+      } catch (error) {
+        categoryList.innerHTML = '<li class="empty-requests">Unable to load categories.</li>';
+      }
+    }
+
+    if (refreshCategories) refreshCategories.addEventListener("click", renderCategories);
+
+    if (addCategoryForm) {
+      addCategoryForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        categoryFormStatus.classList.remove("is-error");
+        categoryFormStatus.textContent = "Saving category...";
+
+        const name = categoryNameInput.value.trim();
+        const id = generateCategoryId(name);
+        const category = { id, name, createdAt: new Date().toISOString() };
+
+        try {
+          await saveCategory(category);
+          addCategoryForm.reset();
+          categoryFormStatus.textContent = "Category successfully saved!";
+          await renderCategories();
+        } catch (error) {
+          categoryFormStatus.classList.add("is-error");
+          categoryFormStatus.textContent = "Failed to save category.";
+        }
+      });
+    }
+
+    // Initial render
+    renderAppointments();
+    renderGoal();
+    renderCategories().then(() => renderProducts());
+  </script>
+</body>
+
+</html>

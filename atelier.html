@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Atelier - Kanak Creation Jewellers</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="kanakcreation.css" />
+</head>
+
+<body>
+  <header class="site-header">
+    <a class="brand" href="index.html" aria-label="Kanak Creation Jewellers home">
+      <span class="brand-mark">A</span>
+      <span>Kanak Creation Jewellers</span>
+    </a>
+    <nav class="nav" aria-label="Primary navigation">
+      <a href="collections.html">Collections</a>
+      <a href="atelier.html">Atelier</a>
+      <a href="#visit">Visit</a>
+      <a href="admin.html" id="navAdminLink" style="display: none; color: var(--accent-gold);">Dashboard</a>
+    </nav>
+    <a class="header-action" href="appointment.html">Book Viewing</a>
+    <button class="logout-action" id="logoutButton" type="button" style="display: inline-flex;">Logout</button>
+  </header>
+
+  <main>
+    <section id="atelier" class="atelier">
+      <div class="atelier-art" aria-hidden="true"
+        style="border: none; background: transparent; display: flex; justify-content: center; align-items: center;">
+        <!-- Please save your second photo as "kc-logo.png" in your project folder! -->
+        <img src="1.png" alt="KC Logo"
+          style="width: 80%; max-height: 80%; object-fit: contain; animation: logo-glow-float 6s ease-in-out infinite;" />
+      </div>
+      <div class="atelier-copy">
+        <p class="eyebrow">The atelier</p>
+        <h2>Custom pieces designed around your story.</h2>
+        <p>
+          Bring a sketch, a family stone, or a half-formed idea. Our designers shape it into a measured
+          CAD concept, wax model, and finished jewel with hallmarked metal and certified stones.
+        </p>
+        <div class="stats">
+          <div><strong>02</strong><span>years of craft</span></div>
+          <div><strong>916</strong><span>hallmarked gold</span></div>
+          <div><strong>GIA</strong><span>stone guidance</span></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer id="visit" class="site-footer">
+    <div>
+      <strong>Kanak Creation Jewellers</strong>
+      <p>MG Road, Bengaluru | Mon-Sat, 10:30 AM-8:00 PM</p>
+    </div>
+    <a href="tel:+919876543210">+91 98765 43210</a>
+  </footer>
+
+  <script>
+    const currentRole = localStorage.getItem("auroraRole");
+    if (currentRole !== "customer" && currentRole !== "admin") {
+      window.location.href = "index.html";
+    }
+    if (currentRole === "admin") {
+      document.getElementById("navAdminLink").style.display = "inline";
+    }
+
+    document.getElementById("logoutButton").addEventListener("click", () => {
+      localStorage.removeItem("auroraRole");
+      window.location.href = "index.html";
+    });
+  </script>
+</body>
+
+</html>

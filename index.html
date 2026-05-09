@@ -1,0 +1,233 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Home - Kanak Creation Jewellers</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="kanakcreation.css" />
+</head>
+
+<body>
+  <header class="site-header">
+    <button class="menu-toggle" id="mobileMenuToggle" aria-label="Toggle menu">&#9776;</button>
+    <a class="brand" href="index.html" aria-label="Kanak Creation Jewellers home">
+      <span class="brand-mark">A</span>
+      <span>Kanak Creation Jewellers</span>
+    </a>
+    <nav class="nav" id="mainNav" aria-label="Primary navigation">
+      <div class="dropdown">
+        <a href="#" class="dropdown-toggle" id="collectionsDropdown">Collections</a>
+        <div class="dropdown-menu">
+          <a href="collections.html">All Collections</a>
+          <a href="collections.html#newArrivals">New Arrivals</a>
+          <a href="collections.html#collections">Curated</a>
+          <a href="collections.html#Ansh">Segment Of Ring</a>
+        </div>
+      </div>
+      <a href="atelier.html">Atelier</a>
+      <a href="#visit">Visit</a>
+    </nav>
+    <a class="header-action" href="appointment.html">Book Viewing</a>
+    <button class="logout-action" id="logoutButton" type="button">Logout</button>
+  </header>
+
+  <main id="home">
+    <section class="login-portal" id="loginPortal">
+      <div class="login-copy">
+        <p class="eyebrow">Login portal</p>
+        <h2>Choose customer access or admin access.</h2>
+        <p class="hero-text">
+          Customers can browse collections and request appointments. Admins can view saved appointment requests from
+          this browser database.
+        </p>
+      </div>
+      <div class="login-card">
+        <div class="role-tabs" aria-label="Login role">
+          <button class="role-tab is-active" id="customerTab" type="button">Customer</button>
+          <button class="role-tab" id="adminTab" type="button">Admin</button>
+        </div>
+
+        <form class="portal-form" id="customerLoginForm">
+          <label>
+            Customer Name
+            <input name="customerName" type="text" placeholder="Your name" required />
+          </label>
+          <button class="button primary" type="submit">Enter as Customer</button>
+        </form>
+
+        <form class="portal-form" id="adminLoginForm" hidden>
+          <label>
+            Admin Username
+            <input name="adminUser" type="text" placeholder="kanak" required />
+          </label>
+          <label>
+            Admin Password
+            <input name="adminPassword" type="password" placeholder="crea" required />
+          </label>
+          <button class="button primary" type="submit">Login as Admin</button>
+          <p class="portal-note">This Site Permission Have Kanak Creation 2026.</p>
+        </form>
+
+        <p class="portal-status" id="portalStatus" role="status" aria-live="polite"></p>
+      </div>
+    </section>
+
+    <section class="hero" aria-label="Luxury jewellery showcase">
+      <div class="hero-copy">
+        <p class="eyebrow">Fine gold, diamonds and handcrafted heirlooms</p>
+        <h1>Kanak Creation Jewellers</h1>
+        <p class="hero-text">
+          Modern bridal sets, luminous daily pieces, and custom ornaments shaped by master karigars.
+        </p>
+        <div class="hero-actions">
+          <a class="button primary" href="collections.html">Explore Designs</a>
+          <a class="button secondary" href="appointment.html">Private Consultation</a>
+        </div>
+      </div>
+
+      <div class="hero-art" aria-hidden="true">
+        <div class="halo"></div>
+        <svg class="necklace" viewBox="0 0 520 520">
+          <defs>
+            <linearGradient id="gold" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0" stop-color="#fff0a9" />
+              <stop offset="0.44" stop-color="#d69b36" />
+              <stop offset="1" stop-color="#8c5a1e" />
+            </linearGradient>
+            <linearGradient id="ruby" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0" stop-color="#ff9aa8" />
+              <stop offset="0.5" stop-color="#b11635" />
+              <stop offset="1" stop-color="#510a18" />
+            </linearGradient>
+            <radialGradient id="diamond" cx="35%" cy="30%" r="70%">
+              <stop offset="0" stop-color="#ffffff" />
+              <stop offset="0.55" stop-color="#cfefff" />
+              <stop offset="1" stop-color="#6aa0b6" />
+            </radialGradient>
+          </defs>
+          <path class="chain" d="M76 144 C120 340 400 340 444 144" />
+          <g class="beads">
+            <circle cx="112" cy="216" r="12" />
+            <circle cx="150" cy="274" r="14" />
+            <circle cx="204" cy="314" r="16" />
+            <circle cx="260" cy="328" r="18" />
+            <circle cx="316" cy="314" r="16" />
+            <circle cx="370" cy="274" r="14" />
+            <circle cx="408" cy="216" r="12" />
+          </g>
+          <g class="pendant">
+            <path d="M260 328 L318 402 L260 482 L202 402 Z" />
+            <path class="gem" d="M260 354 L300 404 L260 458 L220 404 Z" />
+            <path class="shine" d="M238 391 L260 354 L282 391 Z" />
+          </g>
+          <g class="sparkles">
+            <path d="M108 98 L118 124 L144 134 L118 144 L108 170 L98 144 L72 134 L98 124 Z" />
+            <path d="M410 86 L418 107 L440 116 L418 124 L410 146 L402 124 L380 116 L402 107 Z" />
+            <path d="M456 286 L462 301 L478 307 L462 314 L456 330 L450 314 L434 307 L450 301 Z" />
+          </g>
+        </svg>
+      </div>
+    </section>
+
+  </main>
+
+  <footer id="visit" class="site-footer">
+    <div>
+      <strong>Kanak Creation Jewellers</strong>
+      <p>MG Road, Bengaluru | Mon-Sat, 10:30 AM-8:00 PM</p>
+    </div>
+    <a href="tel:+919876543210">+91 98765 43210</a>
+  </footer>
+
+  <script>
+    const customerTab = document.getElementById("customerTab");
+    const adminTab = document.getElementById("adminTab");
+    const customerLoginForm = document.getElementById("customerLoginForm");
+    const adminLoginForm = document.getElementById("adminLoginForm");
+    const portalStatus = document.getElementById("portalStatus");
+    const logoutButton = document.getElementById("logoutButton");
+
+    let currentRole = localStorage.getItem("auroraRole") || "";
+
+    function checkExistingLogin() {
+      if (currentRole === "admin") {
+        window.location.href = "admin.html";
+      } else if (currentRole === "customer") {
+        document.body.classList.add("customer-mode");
+      }
+    }
+
+    function switchLoginTab(role) {
+      const isAdmin = role === "admin";
+      customerTab.classList.toggle("is-active", !isAdmin);
+      adminTab.classList.toggle("is-active", isAdmin);
+      customerLoginForm.hidden = isAdmin;
+      adminLoginForm.hidden = !isAdmin;
+      portalStatus.classList.remove("is-error");
+      portalStatus.textContent = "";
+    }
+
+    customerTab.addEventListener("click", () => switchLoginTab("customer"));
+    adminTab.addEventListener("click", () => switchLoginTab("admin"));
+
+    customerLoginForm.addEventListener("submit", (event) => {
+      event.preventDefault();
+      const formData = new FormData(customerLoginForm);
+      localStorage.setItem("auroraCustomerName", formData.get("customerName").trim());
+      localStorage.setItem("auroraRole", "customer");
+      window.location.href = "collections.html";
+    });
+
+    adminLoginForm.addEventListener("submit", (event) => {
+      event.preventDefault();
+      const formData = new FormData(adminLoginForm);
+      const username = formData.get("adminUser").trim();
+      const password = formData.get("adminPassword");
+
+      if (username === "admin" && password === "An123") {
+        localStorage.setItem("auroraRole", "admin");
+        window.location.href = "admin.html";
+        return;
+      }
+
+      portalStatus.classList.add("is-error");
+      portalStatus.textContent = "Invalid admin username or password.";
+    });
+
+    logoutButton.addEventListener("click", () => {
+      localStorage.removeItem("auroraRole");
+      currentRole = "";
+      document.body.classList.remove("customer-mode");
+      switchLoginTab("customer");
+    });
+
+    // Mobile Menu & Dropdown logic
+    const mobileMenuToggle = document.getElementById("mobileMenuToggle");
+    const mainNav = document.getElementById("mainNav");
+    if (mobileMenuToggle && mainNav) {
+      mobileMenuToggle.addEventListener("click", () => {
+        mainNav.classList.toggle("is-open");
+      });
+    }
+
+    const collectionsDropdown = document.getElementById("collectionsDropdown");
+    if (collectionsDropdown) {
+      collectionsDropdown.addEventListener("click", (e) => {
+        if (window.innerWidth <= 960) {
+          e.preventDefault();
+          collectionsDropdown.parentElement.classList.toggle("is-active");
+        }
+      });
+    }
+
+    checkExistingLogin();
+  </script>
+</body>
+
+</html>

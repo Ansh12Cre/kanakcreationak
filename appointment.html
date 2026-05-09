@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Book Appointment - Kanak Creation Jewellers</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="kanakcreation.css" />
+</head>
+
+<body>
+  <header class="site-header">
+    <a class="brand" href="index.html" aria-label="Kanak Creation Jewellers home">
+      <span class="brand-mark">A</span>
+      <span>Kanak Creation Jewellers</span>
+    </a>
+    <nav class="nav" aria-label="Primary navigation">
+      <a href="collections.html">Collections</a>
+      <a href="atelier.html">Atelier</a>
+      <a href="#visit">Visit</a>
+      <a href="admin.html" id="navAdminLink" style="display: none; color: var(--accent-gold);">Dashboard</a>
+    </nav>
+    <a class="header-action" href="appointment.html">Book Viewing</a>
+    <button class="logout-action" id="logoutButton" type="button" style="display: inline-flex;">Logout</button>
+  </header>
+
+  <main>
+    <section id="appointment" class="appointment">
+      <div>
+        <p class="eyebrow">Private viewing</p>
+        <h2>Try the collection in a calm appointment room.</h2>
+      </div>
+      <div class="appointment-panel">
+        <form class="booking-form" id="appointmentForm">
+          <label>
+            Name
+            <input name="name" type="text" placeholder="Your name" required />
+          </label>
+          <label>
+            Occasion
+            <select name="occasion" required>
+              <option>Bridal consultation</option>
+              <option>Custom design</option>
+              <option>Gold jewellery</option>
+              <option>Repair or redesign</option>
+            </select>
+          </label>
+          <label>
+            Phone
+            <input name="phone" type="tel" placeholder="+91 98765 43210" required />
+          </label>
+          <button class="button primary" type="submit">Request Appointment</button>
+          <p class="form-status" id="formStatus" role="status" aria-live="polite"></p>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer id="visit" class="site-footer">
+    <div>
+      <strong>Kanak Creation Jewellers</strong>
+      <p>MG Road, Bengaluru | Mon-Sat, 10:30 AM-8:00 PM</p>
+    </div>
+    <a href="tel:+919876543210">+91 98765 43210</a>
+  </footer>
+
+  <script>
+    const currentRole = localStorage.getItem("auroraRole");
+    if (currentRole !== "customer" && currentRole !== "admin") {
+      window.location.href = "index.html";
+    }
+    if (currentRole === "admin") {
+      document.getElementById("navAdminLink").style.display = "inline";
+    }
+
+    document.getElementById("logoutButton").addEventListener("click", () => {
+      localStorage.removeItem("auroraRole");
+      window.location.href = "index.html";
+    });
+
+    const appointmentForm = document.getElementById("appointmentForm");
+    const formStatus = document.getElementById("formStatus");
+    const databaseName = "auroraJewellers";
+    const storeName = "appointments";
+
+    function openAppointmentDatabase() {
+      return new Promise((resolve, reject) => {
+        const request = indexedDB.open(databaseName, 4);
+
+        request.onupgradeneeded = () => {
+          const database = request.result;
+          if (!database.objectStoreNames.contains(storeName)) {
+            database.createObjectStore(storeName, { keyPath: "id", autoIncrement: true });
+          }
+          if (!database.objectStoreNames.contains("products")) {
+            database.createObjectStore("products", { keyPath: "id", autoIncrement: true });
+          }
+          if (!database.objectStoreNames.contains("categories")) {
+            database.createObjectStore("categories", { keyPath: "id" });
+          }
+        };
+
+        request.onsuccess = () => resolve(request.result);
+        request.onerror = () => reject(request.error);
+      });
+    }
+
+    async function saveAppointment(appointment) {
+      const database = await openAppointmentDatabase();
+
+      return new Promise((resolve, reject) => {
+        const transaction = database.transaction(storeName, "readwrite");
+        const store = transaction.objectStore(storeName);
+        store.add(appointment);
+
+        transaction.oncomplete = () => {
+          database.close();
+          resolve();
+        };
+        transaction.onerror = () => {
+          database.close();
+          reject(transaction.error);
+        };
+      });
+    }
+
+    appointmentForm.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      formStatus.classList.remove("is-error");
+      formStatus.textContent = "Saving appointment request...";
+
+      const formData = new FormData(appointmentForm);
+      const appointment = {
+        name: formData.get("name").trim(),
+        occasion: formData.get("occasion"),
+        phone: formData.get("phone").trim(),
+        createdAt: new Date().toISOString(),
+      };
+
+      try {
+        await saveAppointment(appointment);
+        appointmentForm.reset();
+        formStatus.textContent = "Appointment request saved in the database.";
+      } catch (error) {
+        formStatus.classList.add("is-error");
+        formStatus.textContent = "Unable to save right now. Please try again.";
+      }
+    });
+  </script>
+</body>
+
+</html>
